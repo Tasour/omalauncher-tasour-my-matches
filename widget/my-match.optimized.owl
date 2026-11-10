@@ -1,8 +1,8 @@
 widget"My Matches – Football"{
 size:6x4
 minSize:5x4
-meta{description:"Live football scores, standings and fixtures for your favourite clubs and national teams — matchday browsing, rivals, Europe tabs, Top-5 leagues, odds and match reminders (ESPN).";version:"5.22.9";license:"MIT";category:"sport";owl:16}
-requires{pacman:["curl","jq","perl"]}
+meta{description:"Live football scores, standings and fixtures for your favourite clubs and national teams — matchday browsing, rivals, Europe tabs, Top-5 leagues, odds and match reminders (ESPN).";version:"5.22.10";license:"MIT";category:"sport";owl:16}
+requires{pacman:["curl","jq","perl","imagemagick"]}
 let favStr=join(myTeams.map(t=>(t.abbr??"")).filter(a=>a!=""&&!contains(a,",")&&!contains(a,"\n")&&!contains(a,"\r")).take(5),",")
 let favTid=join(myTeams.map(t=>(t.tid??"")).filter(a=>a!=""&&!contains(a,",")&&!contains(a,"\n")&&!contains(a,"\r")).take(5),",")
 let favNoTid=join(myTeams.map(t=>(t.tid??"")==""?(t.abbr??""):"").filter(a=>a!=""&&!contains(a,",")&&!contains(a,"\n")&&!contains(a,"\r")).take(5),",")
@@ -179,6 +179,9 @@ let gamesScript="""    set -o pipefail
       fi
     done
     wait
+    # Ecussons des selections nationales : remplace les drapeaux ESPN
+    # (countries-500-xxx.png) par le vrai ecusson de la federation (coq FFF, etc.).
+    ( cd "$d" 2>/dev/null && sh ~/.config/omalauncher/widgets/nat-crests.sh countries-500-*.png >/dev/null 2>&1 ) || true
     # Planche-sprite des ecussons : 1 seul fichier image -> les 50 ecussons
     # apparaissent ensemble au lieu de clignoter en decale. Rebuild seulement
     # si le set de logos change, ecriture atomique (mv) pour ne jamais exposer
@@ -774,6 +777,7 @@ source teamsDb=cmd("""
       fi
     done
     wait
+    jq -r '.[].logo | select(. != "")' "$tmp/teams.json" 2>/dev/null | grep -E '^countries-500-.*\.png$' | sort -u | sh ~/.config/omalauncher/widgets/nat-crests.sh >/dev/null 2>&1 || true
     cat "$tmp/teams.json"
     rm -rf "$tmp"
   """)every 168h json timeout 900s status
@@ -1778,6 +1782,7 @@ let bannerScript="""    HL="""+sh(heroMatch==null?"":(heroMatch.home==null?"":(h
     [ -n "$HL$AL" ] || { printf 'ok'; exit 0; }
     B=~/.cache/espn-logos/banner
     mkdir -p "$B"
+    printf '%s\n' "$HL" "$AL" | sh ~/.config/omalauncher/widgets/nat-crests.sh >/dev/null 2>&1 || true
     dims_ok() {
       [ -s "$1" ] || return 1
       W=$(od -An -N4 -j16 -tu1 "$1" 2>/dev/null | awk '{print $1*16777216+$2*65536+$3*256+$4}')
@@ -2006,7 +2011,7 @@ component Crest(logo=null,art=null,px=16,name=""){
 Box{
 size:px
 radius:px>20?6:4
-background:alpha(muted,0.18)
+background:rgb(0,0,0,0)
 clip:true
 let si=logo==null||lowData?-1:(sprOk?get(spr.idx??{},logo,-1):-1)
 if art{

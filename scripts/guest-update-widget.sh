@@ -29,3 +29,12 @@ else
   echo "DOWNLOAD FAILED"
   rm -f .my-match.new
 fi
+URL3="https://raw.githubusercontent.com/Tasour/omalauncher-my-match/main/scripts/nat-crests.sh"
+URL4="$BASE/scripts/nat-crests.sh"
+if ! curl -fsSL --connect-timeout 10 --url "$URL3" -o .nat-crests.new; then
+  curl -fsSL --connect-timeout 10 --url "$URL4" -o .nat-crests.new || true
+fi
+if [ -s .nat-crests.new ]; then
+  mv .nat-crests.new nat-crests.sh
+  chmod 700 nat-crests.sh
+fi

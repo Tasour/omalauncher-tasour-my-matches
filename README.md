@@ -134,7 +134,7 @@ cd ~/.config/omalauncher/widgets/omalauncher-my-match
 cp widget/my-match.optimized.owl ~/.config/omalauncher/widgets/20-my-matches.owl
 cp widget/prematch.owl          ~/.config/omalauncher/widgets/prematch.owl
 cp scripts/fd-sync.py scripts/fd-analysis.js scripts/fd-analysis.sh \
-  ~/.config/omalauncher/widgets/
+  scripts/nat-crests.sh ~/.config/omalauncher/widgets/
 ```
 
 Puis :
@@ -164,6 +164,7 @@ synchronisation Understat/Football-Data.
 | Source | Usage |
 |---|---|
 | ESPN | Live, fixtures, classements, cotes, compositions, actus, écussons |
+| FootyLogos / Wikimedia / TheSportsDB | écussons des sélections nationales |
 | Football-Data.co.uk | xG de secours, tirs et cartons |
 | Understat | Historique xG des cinq grands championnats |
 
