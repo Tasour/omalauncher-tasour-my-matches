@@ -1,7 +1,7 @@
 # Cartographie fonctionnelle et plan de recette — `my-match.owl`
 
 **Objet** : widget Omalauncher « My Matches – Football », version 5.7, 1 955 lignes.
-**Fichier audité** : `/home/tasour/Work/omalauncher-my-match/widget/my-match.owl`.
+**Fichier audité** : `~/Work/omalauncher-tasour-my-matches/widget/my-match.owl`.
 **Audit initial** : `docs/audit-omalauncher-2026-10-25.html`, cité `audit L.x`.
 **Règle** : aucune fonctionnalité n'est supprimée. Toute optimisation doit être iso-fonctionnelle ; un changement visible non validé est une régression.
 

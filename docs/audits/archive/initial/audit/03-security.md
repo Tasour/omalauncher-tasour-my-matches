@@ -1,6 +1,6 @@
 # Audit sécurité & robustesse — `my-match.owl`
 
-- Source : `/home/tasour/Work/omalauncher-my-match/widget/my-match.owl` (1955 lignes, 102 370 octets)
+- Source : `~/Work/omalauncher-tasour-my-matches/widget/my-match.owl` (1955 lignes, 102 370 octets)
 - Audit initial : `docs/audit-omalauncher-2026-10-25.html` (texte extrait dans `/tmp/opencode/audit-my-match/audit-source.txt`)
 - Référentiel `sh()` : `app/src/main/assets/widgets/docs/declarations.md:55-70` et `owl/src/test/.../LangTest.kt:1439-1454` (dépôt amont dans `/tmp/opencode/upstream-src`)
 - Méthode : analyse statique du widget, extraction des scripts, reproduction locale du quoting shell, lecture du runtime `GuestShell` amont. Aucun test sur téléphone dans cet audit.

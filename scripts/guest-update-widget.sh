@@ -8,7 +8,7 @@ command -v perl >/dev/null 2>&1 || pacman -S --noconfirm perl
 f=$(grep -l 'My Matches' *.owl 2>/dev/null | head -1)
 f=${f:-shared-my-matches-football.owl}
 echo "target=$f"
-URL1="https://raw.githubusercontent.com/Tasour/omalauncher-my-match/main/widget/my-match.optimized.owl"
+URL1="https://raw.githubusercontent.com/Tasour/omalauncher-tasour-my-matches/main/widget/my-match.optimized.owl"
 BASE="${OMA_BASE:-}"
 if [ -z "$BASE" ] && [ -r "$HOME/.config/omalauncher/measure-base" ]; then
   BASE=$(head -n 1 "$HOME/.config/omalauncher/measure-base" 2>/dev/null | tr -d '\r')
@@ -29,7 +29,7 @@ else
   echo "DOWNLOAD FAILED"
   rm -f .my-match.new
 fi
-URL3="https://raw.githubusercontent.com/Tasour/omalauncher-my-match/main/scripts/nat-crests.sh"
+URL3="https://raw.githubusercontent.com/Tasour/omalauncher-tasour-my-matches/main/scripts/nat-crests.sh"
 URL4="$BASE/scripts/nat-crests.sh"
 if ! curl -fsSL --connect-timeout 10 --url "$URL3" -o .nat-crests.new; then
   curl -fsSL --connect-timeout 10 --url "$URL4" -o .nat-crests.new || true

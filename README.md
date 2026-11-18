@@ -9,8 +9,8 @@ Scores live, calendrier, classements, coupes, cotes, xG et une trajectoire de
 performance sur 20 matchs — sans compte, sans backend, sans publicité.
 
 [![OWL 16](https://img.shields.io/badge/OWL-16-7ee787?style=flat-square)](https://github.com/SimonSchubert/omalauncher)
-[![Widget](https://img.shields.io/badge/widget-5.22.9-79c0ff?style=flat-square)](https://github.com/Tasour/omalauncher-my-match)
-[![Pre-match](https://img.shields.io/badge/app-1.0.23-ffa657?style=flat-square)](https://github.com/Tasour/omalauncher-my-match)
+[![Widget](https://img.shields.io/badge/widget-5.22.10-79c0ff?style=flat-square)](https://github.com/Tasour/omalauncher-tasour-my-matches)
+[![Pre-match](https://img.shields.io/badge/app-1.0.23-ffa657?style=flat-square)](https://github.com/Tasour/omalauncher-tasour-my-matches)
 [![MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 [![Offline tests](https://img.shields.io/badge/tests-offline%20suite-brightgreen?style=flat-square)](CONTRIBUTING.md#before-opening-a-pull-request)
 
@@ -127,9 +127,9 @@ la méthode et les limites sont détaillées dans
 - facultatif : `owl-check` pour valider le rendu et les sources.
 
 ```sh
-git clone https://github.com/Tasour/omalauncher-my-match \
-  ~/.config/omalauncher/widgets/omalauncher-my-match
-cd ~/.config/omalauncher/widgets/omalauncher-my-match
+git clone https://github.com/Tasour/omalauncher-tasour-my-matches \
+  ~/.config/omalauncher/widgets/omalauncher-tasour-my-matches
+cd ~/.config/omalauncher/widgets/omalauncher-tasour-my-matches
 
 cp widget/my-match.optimized.owl ~/.config/omalauncher/widgets/20-my-matches.owl
 cp widget/prematch.owl          ~/.config/omalauncher/widgets/prematch.owl

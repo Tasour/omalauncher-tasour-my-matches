@@ -1,6 +1,6 @@
 # Audit OWL et rendu — `my-match`
 
-- Fichier audité : `/home/tasour/Work/omalauncher-my-match/widget/my-match.owl` (1955 lignes).
+- Fichier audité : `~/Work/omalauncher-tasour-my-matches/widget/my-match.owl` (1955 lignes).
 - Références de comportement : `app/src/main/assets/widgets/docs/*.md` et le runtime Compose `app/src/main/kotlin/dev/omalauncher/widgets/`.
 - Date : 2026-10-25.
 - Portée : coût de rendu, expressions OWL, UI, accessibilité/i18n, patchs. Les mesures réseau/API sont dans `01-data.md` ; elles ne sont rappelées ici que lorsqu'elles dominent le coût total.

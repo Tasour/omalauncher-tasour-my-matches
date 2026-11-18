@@ -13,7 +13,7 @@ if [ -z "$BASE" ] && [ -r "$HOME/.config/omalauncher/measure-base" ]; then
 fi
 BASE=$(printf '%s' "$BASE" | tr -d '\r\n')
 printf '%s' "$BASE" | grep -Ex '^https?://[A-Za-z0-9._:-]+$' || BASE="http://127.0.0.1:1764"
-GH591="https://raw.githubusercontent.com/Tasour/omalauncher-my-match/459ff1f/widget/my-match.optimized.owl"
+GH591="https://raw.githubusercontent.com/Tasour/omalauncher-tasour-my-matches/459ff1f/widget/my-match.optimized.owl"
 DIR="$HOME/.config/omalauncher/widgets"
 
 cd "$DIR" || { echo "no widgets dir"; exit 1; }
