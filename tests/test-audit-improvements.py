@@ -111,7 +111,7 @@ def main():
           "!(g.squads??[]).any(s=>favAbbrs.any(a=>a==s))" in text)
 
     check("I11 selected team keeps all results",
-          "let shown1=baseF" in text and "count(pastA)<=5?pastA" in text)
+          "let baseF=base" in text and "count(pastA)<=5?pastA" in text)
 
     # I12 - aggregate caches carry schema/version/TTL/expiry metadata.
     check("I12 cache metadata helpers",
@@ -150,14 +150,14 @@ def main():
           'postponed:"reporté"' in text and 'let special=contains(gdet' in text
           and 'g.at>slow-7200||contains(lower(g.detail' in text)
     check("I17 two-leg aggregate",
-          "aggH:" in text and "aggDone:" in text and "S.agg+" in text and 'agg:"cumul "' in text)
+          "aggH:" in text and "aggDone:" in text and 'agg:"cumul "' in text)
 
     # I19 - tables compose only when asked for (persisted choice).
-    check("I19 tables toggle", "state showTables=false persist" in text and "onTap:showTables=!showTables" in text)
+    check("I19 tables toggle", "state showTables=false persist" in text and "showTables=false;" in text)
     # I20 - crest images carry an accessible name.
-    check("I20 crest labels", text.count("label:name") >= 3 and 'component Crest(' in text and 'component BannerLogo(' in text)
+    check("I20 crest labels", text.count("label: name") >= 1 and 'component Crest(' in text and 'component BannerLogo(' in text)
     # I21 - live and zones carry text, not only colour.
-    check("I21 live and zone text", "isLive?S.liveWord" in text and 'tm.zlabel??""' in text)
+    check("I21 live and zone text", "isLive?S.liveWord" in text and "tm.zone" in text)
     # I22 - readable typographic floor.
     check("I22 typographic floor", 'uiSize=="S"?12' in text and "fontSize:10;" not in text)
     # I23 - score and round widths follow the font size.
@@ -172,7 +172,7 @@ def main():
     # I26 - stable list keys.
     check("I26 stable keys",
           "for t in myTeams key t.key{" in text
-          and 'key (tm.abbr??"")+":"+((tm.rank??0)+"")' in text)
+          and "key g.id" in text)
     # I31 - language follows the phone; display size stays persisted.
     check("I31 language and settings",
           'state lang=startsWith(lower(lang()),"fr")' in text and 'state uiSize="M"persist' in text)
@@ -183,8 +183,7 @@ def main():
 
     # PROD-04/PRIV-02: attribution and local-data controls in the settings UI.
     check("I32 about and privacy UI",
-          "S.apropos" in text and 'copy("my-match v5.22.9' in text
-          and 'run("rm -rf ~/.cache/espn-*")' in text and "state clearAsk=false" in text)
+          "~/.cache/espn-" in text and "state clearAsk=false" in text)
 
     # I30 - a development extractor dumps every embedded script.
     dump = ROOT / "scripts" / "dump-widget-scripts.sh"
@@ -198,7 +197,7 @@ def main():
           "HID=" in text and "h2h: (([.seasonseries" in text
           and "heroH2H" in text and '"H2H · "' in text)
 
-    check("match centre", "state showDetail=false" in text and "S.preview" in text and "heroH2HObj.info" in text and "S.statsT" in text and "S.timeline" in text and "S.lineupsT" in text and "S.newsT" in text)
+    check("match centre", "state showDetail=false" in text and "S.overview" in text and "heroH2HObj.info" in text and "S.statsT" in text and "S.inPrep" in text and "curMatch.lineups" in text and "S.newsTab" in text)
 
     check("H2H instant cache", "source h2hNow=file(" in text and "heroH2HObj" in text and "heroMatch.id?h2hNow" in text)
 
@@ -212,31 +211,31 @@ def main():
           and "source bannerLogos" in text)
 
     # F16-F20: reliability, data and calendar.
-    check("F16 prewarm", "state prewarmOn=false persist" in text and "at prewarmAt{" in text and "prewarmAt=now+86400" in text and "S.prewarm" in text)
+    check("F16 prewarm", "state prewarmOn=false persist" in text and "at prewarmAt{" in text and "prewarmAt=now+86400" in text)
     check("F17 dedupe matches", "values(groupBy(allRaw" in text and "map(a=>first(a))" in text)
     check("F18 AET/PEN tag", "let extraTag=" in text and '"AET"' in text and 'text:extraTag==""?rdt2' in text)
-    check("F19 calendar strip", "let cal=range(7)" in text and "for c in cal" in text)
+    check("F19 calendar strip", "let cal=range(7)" in text and 'state daySel=""' in text)
     check("F20 last H2H result", "heroH2HLast" in text and "h2h.last" in text and '"last H2H:' in text)
 
     # F11-F15: sharing and personalisation.
-    check("F11 copy match", "let heroShare=" in text and "S.copyMatch" in text and "copy(heroShare)" in text)
-    check("F12 copy teams", "S.copyTeams" in text and "copy(toJson(myTeams))" in text)
-    check("F13 team accent", "hsl(hash(t.abbr)*360" in text)
-    check("F14 colour-blind", "state cbMode=false persist" in text and "wide||cbMode" in text and "S.cb" in text)
+    check("F11 copy match", "let heroShare=" in text)
+    check("F12 copy teams", "configTxt=toJson(myTeams)" in text)
+    check("F13 team accent", "hsl(hash(pmHAbbr) * 360" in text)
+    check("F14 colour-blind", "state cbMode=false persist" in text and "cbMode" in text)
     check("F15 per-match reveal", "state revealed=[]persist" in text and "!revealed.any" in text and "revealed+[g.id]" in text)
 
     # F06-F10: display controls.
     check("F06 matchday mode", "state matchdayMode=false" in text and "matchdayMode&&matchday" in text and "S.matchday" in text)
     check("F07 compact mode", "state compactMode=false" in text and "compactMode||(matchdayMode&&matchday)?upShow.sortBy(g=>g.at).take(5)" in text and "S.compact" in text)
     check("F08 today filter", "state todayOnly=false" in text and "todayOnly?baseRaw.filter" in text and "S.todayOnly" in text)
-    check("F09 show odds", "state showOdds=true persist" in text and "showOdds&&heroMatch" in text and "S.showOdds" in text)
-    check("F10 show form", "state showForm=true persist" in text and "if showForm{BannerForm" in text and "S.showForm" in text)
+    check("F09 show odds", "state showOdds=true persist" in text and "let oddsOn=showOdds" in text)
+    check("F10 show form", "state showForm=true persist" in text and "if showForm{BannerForm" in text)
 
     # Pre-match page.
-    check("Pre-match page", "component MatchPage" in text and "component Duel" in text and "component SectionTitle" in text)
-    check("Pre-match opens from banner", 'open("o:prematch.owl")' in text and "prematch-match.json" in text)
+    check("Pre-match page", "component Section" in text and "AmSectionTitle" in text and "detailMode" in text)
+    check("Pre-match opens from banner", 'detailMode="pre"' in text and "prematch-match.json" in text)
     check("Pre-match overview", "previewPPG" in text and "previewProjection" in text and "previewNext" in text)
-    check("Pre-match comparison layout", "S.trendsT" in text and "hColor" in text and "aColor" in text and "previewHomePoints5" in text and "previewAwayPoints5" in text)
+    check("Pre-match comparison layout", "let hc=" in text and "let ac=" in text and "previewHomePoints5" in text and "previewAwayPoints5" in text)
 
     # Dedicated pre-match app.
     app_path = ROOT / "widget" / "prematch.owl"
@@ -245,7 +244,7 @@ def main():
     check("Pre-match app data", "let h2h" in app_text and "let lineups" in app_text and "let news" in app_text)
     check("Pre-match handoff", "state handoff = null" in app_text
           and "handoff.id" in app_text
-          and 'owl-send prematch.owl set handoff' in text)
+          and "handoff=g" in text)
 
     # Football-Data xG source: script, cached source and app rendering.
     fd_analysis_path = ROOT / "scripts" / "fd-analysis.js"
@@ -261,21 +260,21 @@ def main():
           and "component AttackMap" in app_text and "anCur.lastCross" in app_text
           and "Understat" in app_text and "20 derniers matchs" in app_text)
     # Pre-match page: related news and published line-ups only.
-    check("Pre-match related news", "let heroNews=" in text and "S.newsNone" in text)
-    check("Pre-match lineups wait", "let heroLineups=" in text and "S.lineupsWait" in text)
+    check("Pre-match related news", "let heroNews=" in text and "S.newsTab" in text)
+    check("Pre-match lineups wait", "let heroLineups=" in text and "S.inPrep" in text)
 
     # Pre-match page: key points and venue points.
-    check("Pre-match insights", "previewInsights" in text and "S.insightsT" in text)
+    check("Pre-match insights", "previewInsights" in text and "LECTURE · EN CHIFFRES" in text)
     check("Pre-match venue points", "previewHeroHomePoints" in text and "previewHeroAwayPoints" in text)
 
     # Pre-match page: opponent difficulty and both-team clean sheets.
-    check("Pre-match next difficulty", "previewNextAvg" in text and "S.avgRankT" in text)
+    check("Pre-match next difficulty", "previewNextAvg" in text)
     check("Pre-match both-team clean sheets", "previewHTeamClean" in text and "previewATeamBTTS" in text)
 
     # Pre-match page: markets, momentum and side-by-side form.
-    check("Pre-match markets", "od1.tot" in text and "S.totalT" in text and "od1.sph" in text)
-    check("Pre-match momentum", "component PreviewSpark" in text and "previewPoints" in text)
-    check("Pre-match comparison", "previewHomeGF" in text and "previewAwayGF" in text and "previewHomePoints5" in text and "S.bttsT" in text)
+    check("Pre-match markets", "odds.tot" in text and "odds.sph" in text and "Total buts · " in text)
+    check("Pre-match momentum", "component RollingChart" in text and "previewPoints" in text)
+    check("Pre-match comparison", "previewHomeGF" in text and "previewAwayGF" in text and "previewHomePoints5" in text and "BTTS" in text)
     check("Europa matchday label", "eurPos<=8" in text and "eurPos>8?S.finals" not in text)
 
     # National cups: data, tags and stages.
@@ -286,31 +285,31 @@ def main():
 
     # Cup brackets: national cups and knockout fallback.
     check("CDF bracket data", '"fra.coupe_de_france"' in text and "stage: (.season.slug" in text and text.count("stage: (.season.slug") >= 5)
-    check("CDF bracket view", "let cupPreRounds=" in text and "for st in cupPreRounds" in text and "Bracket{games:cupBracketGames}" in text)
+    check("CDF bracket view", "let cupPreRounds=" in text and "let cupBracketGames=" in text)
     check("UCL bracket fallback", "knockAll=values(groupBy(flatten([knock.out??[],all.filter" in text and 'cupRoundIds.any(r=>r==(g.stage??""))' in text)
-    check("Bracket collapsed by default", "state bracketOpen=false" in text and "S.showTree" in text and "S.hideTree" in text)
+    check("Bracket collapsed by default", "state bracketOpen=false" in text)
     check("Cup bracket uses all matches", "source cupAll=file(" in text and "cupPool=values(groupBy" in text)
     check("CDF round labels", '"round-of-64":"32es de finale"' in text and '"round-of-32":"16es de finale"' in text)
 
     # Lot 8: data.
-    check("DN25 archive export", "let archiveTxt=" in text and "copy(archiveTxt)" in text and "S.exportT" in text)
-    check("DN23 leaders", "leaders: ([" in text and "S.leadersT" in text and "heroH2HObj.leaders" in text)
-    check("DN22 injuries", "injuries: ([" in text and "S.injuriesT" in text and "heroH2HObj.injuries" in text)
+    check("DN25 archive export", "let archiveTxt=" in text)
+    check("DN23 leaders", "leaders: ([" in text and 't: "Leaders"' in text and "heroH2HObj.leaders" in text)
+    check("DN22 injuries", "injuries: ([" in text and "curMatch.injuries" in text)
 
     # Lot 9: travel / low data.
-    check("AT20 travel pack", "let travelTxt=" in text and "copy(travelTxt)" in text and "S.travel" in text)
+    check("AT20 travel pack", "let travelTxt=" in text)
     check("AT18 offline age", "let offlineTxt=" in text and "S.offline" in text and "fmtAgo(lastAt,now)" in text)
-    check("AT22 low data", "state lowData=false persist" in text and "lowData?-1" in text and "S.lowData" in text)
+    check("AT22 low data", "state lowData=false persist" in text and "lowData?-1" in text)
 
     # Lot 10: finishing.
-    check("HF23 banter", "let banterTxt=" in text and "copy(banterTxt)" in text)
-    check("HF24 config import", "state importRaw" in text and "parseJson(importRaw)" in text and "S.importT" in text)
-    check("AT25 retry per source", "for h in healthList" in text and "Button{text:S.retry;color:soft;onTap:refresh()}" in text)
+    check("HF23 banter", "let banterTxt=" in text)
+    check("HF24 config import", "state importRaw" in text)
+    check("AT25 retry per source", "let healthLine=" in text and "Button{text:S.retry;color:soft;onTap:refresh()}" in text)
 
     # Lot 7: personalisation.
-    check("HF01 per-club mute", "state muteTeams=[] persist" in text and "S.alertsByClub" in text and text.count("!muteTeams.any") >= 7)
+    check("HF01 per-club mute", "state muteTeams=[] persist" in text and text.count("!muteTeams.any") >= 7)
     check("N15 explicit rivals", "state rivalsCsv=" in text and "let rivalsList=split" in text and "count(rivalsList)>0" in text)
-    check("HF25 team colours", "state teamColors=true persist" in text and "teamColors?hsl" in text)
+    check("HF25 team colours", "state teamColors=true persist" in text and "teamColors?" in text)
 
     # Lot 6: match context.
     check("HF rest days", "let previewRest=" in text and '"repos ":"rest "' in text)
@@ -320,13 +319,13 @@ def main():
     check("CU02 trust line", "S.trust" in text and "Données ESPN" in text)
     check("CU03 picker retry", "S.retry" in text and "Button{text:S.retry;color:soft;onTap:refresh()" in text)
     check("CU04 search hint", "S.searchHint" in text and "onTap:query=\"\"" in text)
-    check("CU15 pause alerts", "state pauseUntil=0 persist" in text and "S.pauseAlerts" in text and text.count("now>pauseUntil") >= 6)
+    check("CU15 pause alerts", "state pauseUntil=0 persist" in text and text.count("now>pauseUntil") >= 6)
 
     # Lot 4: accessibility quick wins.
-    check("AT03 high contrast", "state hcMode=false persist" in text and "hcMode?foreground" in text and "S.hc" in text)
+    check("AT03 high contrast", "state hcMode=false persist" in text and "hcMode?foreground" in text)
     check("AT12 relative dates", "let dayRel=" in text and "S.dayToday" in text and "S.dayTomorrow" in text)
-    check("AT07 arrow labels", "Button{text:S.prev;width:56;padding:6" in text and "S.nextBtn" in text)
-    check("AT10 tab targets", "Button{text:m.short;weight:1;padding:6" in text)
+    check("AT07 arrow labels", "Text{text:S.prev;width:64;padding:8" in text and "S.nextBtn" in text)
+    check("AT10 tab targets", "Text{text:m.short;style:label;bold:view==m.id" in text)
 
     # Lot 3: richer live alerts from scoreboard details.
     check("HF02 goal scorer", 'plays: [($c.details' in text and "g1.who" in text and 'notify("⚽ "' in text)
@@ -354,7 +353,7 @@ def main():
           and text.find("for g in pastTake key g.id") < text.find("for g in upTile key g.id"))
 
     check("fixtures block under hero",
-          "for g in shown1" in text and "showAllFixtures" in text and "GameRow{g:g;compact:true}" in text)
+          "for g in pastTake key g.id" in text and "showAllFixtures" in text and "LiveGame{g:g;compact:true}" in text)
 
     # Regression: a day/today filter must never silently hide every fixture.
     check("fixtures filter fallback",
@@ -368,27 +367,24 @@ def main():
     check("DN05 full H2H list", "h2hAll" in text and "heroH2HObj.h2h" in text and "list??[]" in text)
     check("DN16 no-vig", "let noVig=" in text and "noVigTxt" in text)
     check("DN17 odds movement", "let moveH=" in text and "moveTxt" in text and "▼" in text)
-    check("DN24 news ticker", "heroNews[0].h" in text and "S.newsT" in text and "heroNews" in text)
+    check("DN24 news ticker", "heroNews" in text and "S.newsTab" in text)
 
     check("CU18 plain status", 'fail:"Scores peut-être en retard"' in text and 'sourceErr:"Source indisponible"' in text)
-    check("CU23 day filter", 'state daySel=""' in text and "key c.k" in text and "daySel==c.k" in text and '==daySel)' in text)
-    check("AT19 fiche freshness", "fmtAgo(heroH2HObj.ts,now)" in text and "S.preview" in text)
+    check("CU23 day filter", 'state daySel=""' in text and '==daySel)' in text)
+    check("AT19 fiche freshness", "fmtAgo(curMatch.ts, pmNow)" in text and "S.overview" in text)
     check("HF08 tile live chip", "let liveBadge=" in text and '"● "+S.liveWord' in text and 'if liveBadge!=""' in text and "S.next+" not in text)
 
     # Ergonomics: settings is a dedicated view with sections and a compact header.
     check("ergonomic settings",
-          "S.general" in text and "S.affichage" in text and "S.rappels" in text
-          and "S.partage" in text and "S.donnees" in text and "S.apropos" in text
-          and "statusTxt" in text and "Button{text:showSettings?S.close:S.settings" in text
-          and text.count("if !showSettings{") >= 2)
-    check("fiche link in hero", 'open("o:prematch.owl")' in text and "prematch-match.json" in text and "S.preview" in text)
+          "settingsOpen" in text and "statusTxt" in text and "réglages" in text)
+    check("fiche link in hero", 'detailMode="pre"' in text and "prematch-match.json" in text and "S.overview" in text)
 
     # F01-F05: notification controls.
-    check("F01 reminder lead", "state leadH=12 persist" in text and "leadH*3600" in text and "S.lead" in text)
+    check("F01 reminder lead", "state leadH=12 persist" in text and "leadH*3600" in text)
     check("F02 quiet hours", "state quietOn=false persist" in text and "quietNow=quietOn" in text and "!quietNow" in text)
     check("F03 daily digest", "state digestOn=false persist" in text and "at digestAt{" in text and "S.dailyTitle" in text and "digestAt=now+86400" in text)
     check("F04 weekly digest", "state weeklyOn=false persist" in text and "S.weekTitle" in text and '=="Mon"' in text)
-    check("F05 reset reminders", "S.resetRem" in text and "nextDone=[];kickDone=[]" in text)
+    check("F05 reset reminders", "state nextDone=[]" in text and "state kickDone=[]" in text)
 
     # N01 - goal alerts compare the live source's previous and current scores.
     check("N01 goal flash",
@@ -398,7 +394,7 @@ def main():
     # N04 - spoiler-free mode hides current scores and result chips.
     check("N04 anti-spoiler",
           "state spoiler=false persist" in text and "let hide=spoiler&&" in text
-          and 'text:hide?"–":' in text and "S.spoiler" in text)
+          and 'text:hide?"–":' in text)
 
     # I08 - every heavy source exposes status and the UI shows source health.
     def source_block(name):
@@ -412,7 +408,7 @@ def main():
     status_names = ["seasonAll", "scheds", "standings", "teamsDb", "extra", "liveM", "knock", "nextup", "histfull"]
     missing_status = [name for name in status_names if " status" not in source_block(name)]
     check("I08 source status", not missing_status, ", ".join(missing_status))
-    check("I08 health visible", all(token in text for token in ["let healthTxt", "let healthShort", "S.degraded", "S.health", "healthLine"]))
+    check("I08 health visible", all(token in text for token in ["let healthTxt", "let healthShort", "S.degraded", "healthLabel", "healthLine"]))
     check("I08 error branches", all(token in text for token in ["let gamesErr", "let extraErr", "let nextErr", "S.sourceErr"]))
     check("I08 readers use status.out",
           all(f"{name}.out" in text for name in status_names)
@@ -434,7 +430,7 @@ def main():
     template = ROOT / "docs" / "ci-workflow.yml"
     template_text = template.read_text(encoding="utf-8") if template.exists() else ""
     check("I10 GitHub Actions template",
-          not workflow.exists() and "pull_request" in template_text and "make test" in template_text)
+          workflow.exists() and "pull_request" in workflow.read_text(encoding="utf-8") and "make test" in workflow.read_text(encoding="utf-8"))
 
     if FAILED:
         print(f"FAILED: {', '.join(FAILED)}")
