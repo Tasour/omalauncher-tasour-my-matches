@@ -1,0 +1,27 @@
+name: offline checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install fixture tools
+        run: sudo apt-get update && sudo apt-get install -y jq
+      - name: Run offline checks
+        run: make test-all
+      - name: OWL compile gate when a checker is provided
+        env:
+          OWL_JAR: ${{ secrets.OWL_JAR }}
+        run: |
+          if [ -n "${OWL_JAR:-}" ] && [ -f "$OWL_JAR" ]; then
+            java -jar "$OWL_JAR" check widget/my-match.optimized.owl
+          else
+            echo "OWL_JAR secret not set; owl-check stays a local device gate"
+          fi
